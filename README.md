@@ -28,7 +28,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://i.imgur.com/XsP0VOM.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/dominhnhut01/recipe_dashboard/blob/main/public/result_project6.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 <!-- Replace this with whatever GIF tool you used! -->
 GIF created with peek
