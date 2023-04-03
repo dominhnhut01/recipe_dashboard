@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { FiLink } from "react-icons/fi";
+
 import Controls from "./Controls";
 import SummaryBoard from "./SummaryBoard";
 
 import "./Dashboard.css";
+import TasteChart from "./TasteChart";
 
 const API_KEY = import.meta.env.VITE_RECIPE_API;
 function Dashboard(props) {
   const [recipeInfo, setRecipeInfo] = useState([]);
+  const [curDishID, setCurDishID] = useState(-1);
   const [filteredRecipeInfo, setFilteredRecipeInfo] = useState([
     {
       title: "Please wait...",
@@ -15,7 +20,7 @@ function Dashboard(props) {
       carbs: 0,
       protein: 0,
       fat: 0,
-    }
+    },
   ]);
   const [filterConfig, setFilterConfig] = useState({});
   const [stats, setStats] = useState({
@@ -97,42 +102,61 @@ function Dashboard(props) {
     console.log(data);
   }
 
+  function redirectDetails(dish_id) {}
+
   return (
     <div className="dashboard">
-      <div className="mt-5 mb=5">
-        <Controls passSliderData={getSliderData} />
-      </div>
-      <div className="mt-5 mb-5">
-        <SummaryBoard stats={stats} />
-      </div>
+      <div className="row">
+        <div className="col-7">
+          <Controls passSliderData={getSliderData} />
+          <SummaryBoard stats={stats} />
 
-      <div className="container mt-5">
-        <h4>Result</h4>
-        <div className="row bg-secondary text-white py-2">
-          <div className="col-4 text-center">Dish Name</div>
-          <div className="col-2 text-center">Calories</div>
-          <div className="col-2 text-center">Carbs (g)</div>
-          <div className="col-2 text-center">Protein (g)</div>
-          <div className="col-2 text-center">Fat (g)</div>
+          <div className="section-container">
+            <h4>Result</h4>
+            <h9>Hover your mouse over each dish name to see its taste measurement chart</h9>
+            <div className="row card-title-color text-white py-2">
+              <div className="col-3 text-center">Dish Name</div>
+              <div className="col-2 text-center">Calories</div>
+              <div className="col-2 text-center">Carbs (g)</div>
+              <div className="col-2 text-center">Protein (g)</div>
+              <div className="col-2 text-center">Fat (g)</div>
+              <div className="col-1 text-center">Details (g)</div>
+            </div>
+            {filteredRecipeInfo &&
+              filteredRecipeInfo.map((recipe, idx) => {
+                return (
+                  <div className="row card-content-color py-4" key={idx}>
+                    <div
+                      className="content-item col-3 text-white"
+                      onMouseEnter={() => setCurDishID(recipe.id)}
+                    >
+                      {recipe.title}
+                    </div>
+                    <div className="content-item col-2 text-white text-center">
+                      {recipe.calories}
+                    </div>
+                    <div className="content-item col-2 text-white text-center">
+                      {recipe.carbs}
+                    </div>
+                    <div className="content-item col-2 text-white text-center">
+                      {recipe.protein}
+                    </div>
+                    <div className="content-item col-2 text-white text-center">
+                      {recipe.fat}
+                    </div>
+                    <div className="content-item col-1 text-white text-center">
+                      <Link to={`/details/${recipe.id}`}>
+                        <FiLink />
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
         </div>
-        {filteredRecipeInfo &&
-          filteredRecipeInfo.map((recipe, idx) => {
-            return (
-              <div className="row bg-success bg-gradient py-4" key={idx}>
-                <div className="col-4 text-white">{recipe.title}</div>
-                <div className="col-2 text-white text-center">
-                  {recipe.calories}
-                </div>
-                <div className="col-2 text-white text-center">
-                  {recipe.carbs}
-                </div>
-                <div className="col-2 text-white text-center">
-                  {recipe.protein}
-                </div>
-                <div className="col-2 text-white text-center">{recipe.fat}</div>
-              </div>
-            );
-          })}
+        <div className="col-5">
+            {curDishID != -1 && <TasteChart dish_id={curDishID} />}
+        </div>
       </div>
     </div>
   );

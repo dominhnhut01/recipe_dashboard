@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import './Control.css'
 
 function Controls(props) {
   const [searchToggle, setSearchToggle] = useState(false);
@@ -26,7 +27,7 @@ function Controls(props) {
   }, [searchToggle]);
 
   return (
-    <div className="container bg-success">
+    <div className="section-container">
       <h4>Filtering Result</h4>
       <div className="row">
         <div className="col-6">
